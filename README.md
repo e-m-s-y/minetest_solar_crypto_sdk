@@ -15,7 +15,7 @@ is tested with version 5.6.1. I used the `stable-5` branch of https://github.com
 Next, after you got a barebone Minetest client running, proceed with the following steps to install the Solar Crypto SDK:
 
 1. Clone the Solar Crypto SDK in the Minetest library folder by `cd minetest/lib` and or `git clone git@github.com:e-m-s-y/minetest_solar_crypto_sdk.git solar_crypto`.
-2. Add the `l_solar_crypto.cpp` and `l_solar_crypto.h` files to `minetest/src/script/lua_api`.
+2. Move the `l_solar_crypto.cpp` and `l_solar_crypto.h` files to `minetest/src/script/lua_api`.
 3. Add `${CMAKE_CURRENT_SOURCE_DIR}/l_solar_crypto.cpp` to `common_SCRIPT_LUA_API_SRCS` in `minetest/src/script/lua_api/CMakeLists.txt`. I added it right after `l_settings.cpp` to follow the alphabetical order.
 4. Extend Minetest core by adding the lines prefixed with a `+` to `minetest/src/script/lua_api/l_util.cpp`. Remove the `+` symbols in your code.
 
