@@ -80,5 +80,5 @@ Make sure to cd to your minetest root directory. Compile and build the client us
 
 ### TODO
 - Clean up dependencies (use dependency manager).
-- Add to sign transaction feature.
+- Add sign transaction feature.
 - Add crypto debug dialog.
