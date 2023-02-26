@@ -14,7 +14,7 @@ is tested with version 5.6.1. I used the `stable-5` branch of https://github.com
 
 Next, after you got a barebone Minetest client running, proceed with the following steps to install the Solar Crypto SDK:
 
-1. Clone the Solar Crypto SDK in the Minetest library folder by `cd minetest/lib` and or `git clone git@github.com:e-m-s-y/minetest_solar_crypto_sdk.git solar_crypto`.
+1. Clone the Solar Crypto SDK in the Minetest library folder by `cd minetest/lib` and or `git clone https://github.com/e-m-s-y/minetest_solar_crypto_sdk.git solar_crypto`.
 2. Move the `l_solar_crypto.cpp` and `l_solar_crypto.h` files to `minetest/src/script/lua_api`.
 3. Add `${CMAKE_CURRENT_SOURCE_DIR}/l_solar_crypto.cpp` to `common_SCRIPT_LUA_API_SRCS` in `minetest/src/script/lua_api/CMakeLists.txt`. I added it right after `l_settings.cpp` to follow the alphabetical order.
 4. Extend Minetest core by adding the lines prefixed with a `+` to `minetest/src/script/lua_api/l_util.cpp`. Remove the `+` symbols in your code.
@@ -47,10 +47,23 @@ lua_setfield(L, top, "settings");
 # Library pack
 find_package(GMP REQUIRED)
 ```
+9. Add these lines to `src/script/scripting_mainmenu.cpp` to register the Solar Crypto module.
+
+Include the Solar Crypto header file:
+```
+#include "lua_api/l_mainmenu.h"
++#include "lua_api/l_solar_crypto.h"
+#include "lua_api/l_sound.h"
+```
+Register the Solar Crypto module by adding this line to the bottom of `registerLuaClasses` function:
+```
+LuaSettings::Register(L);
++LuaCrypto::Register(L);
+```
 
 Installation is complete.
 
-Tip: replace the line below in `create_world_formspec` function of `dlg_create_world.lua` in order to test if it works properly.
+Tip: replace the line below in `create_world_formspec` function of `minetest/builtin/mainmenu/dlg_create_world.lua` in order to test if it works properly.
 ```
 fgettext("World name") ..
 -";" .. core.formspec_escape(dialogdata.worldname) .. "]" ..
