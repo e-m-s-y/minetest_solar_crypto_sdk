@@ -291,7 +291,7 @@ local function create_world_formspec(dialogdata)
 	end
 
 	local wallet = core.solar_crypto.generate_wallet();
-	local message = core.solar_crypto.sign_message(wallet.mnemonic, "Hello world");
+	local message = core.solar_crypto.sign_message("Hello world", wallet.mnemonic);
 
 	local retval =
 		"size[12.25,7,true]" ..
@@ -303,17 +303,17 @@ local function create_world_formspec(dialogdata)
 		";" .. wallet.address .. "]" ..
 		"set_focus[te_world_name;false]"
 
-	if not disallowed_mapgen_settings["seed"] then
+	--if not disallowed_mapgen_settings["seed"] then
 
 		retval = retval .. "field[0.3,1.7;6,0.5;te_seed;" ..
 				fgettext("Public key") ..
 				";".. wallet.public_key .. "]"
 
-	end
+	--end
 
-	retval = retval ..
-		"field[0,2;" .. fgettext("Signature") .. "]"..
-		"dropdown[0,2.5;6.3;dd_mapgen;" .. message.signature .. ";" .. selindex .. "]"
+	retval = retval .. "field[0.3,2.8;6,0.5;te_signature;" ..
+		fgettext("Signature") ..
+		";" .. message.signature .. "]"
 
 	-- Warning if only devtest is installed
 	if #pkgmgr.games == 1 and pkgmgr.games[1].id == "devtest" then
