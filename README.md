@@ -82,13 +82,10 @@ LuaSettings::Register(L);
 +LuaCrypto::Register(L);
 ```
 
-Tip: replace the line below in `create_world_formspec` function of `minetest/builtin/mainmenu/dlg_create_world.lua` in order to test if it works properly.
-```
-fgettext("World name") ..
--";" .. core.formspec_escape(dialogdata.worldname) .. "]" ..
-+";" .. core.solar_crypto.generate_wallet().address .. "]" ..
-```
-After building it should show a random wallet address in the World Name field after clicking the New button in Start Game tab.
+### Quick test
+Move `dlg_create_world.lua` to `minetest/builtin/mainmenu/dlg_create_world.lua` and replace the file. After building it
+should show a random wallet and signature in the dialog after clicking the New button in Start Game tab. You can
+checkout the `dlg_create_world.lua` file to reset it back to the original content.
 
 ### Examples
 ```
