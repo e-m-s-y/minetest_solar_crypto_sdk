@@ -53,7 +53,7 @@ Installation is complete. In order to register the Solar Crypto SDK goto section
 #### Usage
 You have to register the Solar Crypto SDK by performing the steps of at least one, or all, section(s) below depending on your use case.
 
-*Main menu*
+**Main menu**
 Add these lines to `src/script/scripting_mainmenu.cpp` to enable the Solar Crypto SDK in the main menu scripts.
 
 Include the Solar Crypto header file:
@@ -68,7 +68,7 @@ LuaSettings::Register(L);
 +LuaCrypto::Register(L);
 ```
 
-*In game*
+**In game**
 Add these lines to `src/script/scripting_client.cpp` to enable the Solar Crypto SDK in the actual game.
 
 Include the Solar Crypto header file:
@@ -90,7 +90,7 @@ fgettext("World name") ..
 ```
 After building it should show a random wallet address in the World Name field after clicking the New button in Start Game tab.
 
-### Usage
+### Examples
 ```
 local wallet = core.solar_crypto.generate_wallet()
 
