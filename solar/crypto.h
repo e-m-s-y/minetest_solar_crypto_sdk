@@ -13,4 +13,4 @@ std::string generate_mnemonic(int bits);
 std::string mnemonic_to_wallet_address(std::string mnemonic);
 std::string mnemonic_to_public_key(std::string mnemonic);
 std::string mnemonic_to_private_key(std::string mnemonic);
-std::string sign_message(std::string mnemonic, std::string message);
+std::string sign_message(std::string message, std::string mnemonic);

@@ -191,7 +191,7 @@ void mnemonic_to_private_key(std::string mnemonic, unsigned char *out) {
 	sha256_final(&sha256, out);
 }
 
-std::string sign_message(std::string mnemonic, std::string message) {
+std::string sign_message(std::string message, std::string mnemonic) {
 	std::string publicKey = mnemonic_to_public_key(mnemonic);
 
 	sha256_t sha256;

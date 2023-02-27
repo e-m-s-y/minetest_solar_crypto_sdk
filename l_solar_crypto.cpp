@@ -40,13 +40,13 @@ int LuaCrypto::l_generate_wallet(lua_State *L)
 
 int LuaCrypto::l_sign_message(lua_State *L)
 {
-	std::string message = std::string(luaL_checkstring(L, 2));
-	std::string mnemonic = std::string(luaL_checkstring(L, 3));
+	std::string message = std::string(luaL_checkstring(L, 1));
+	std::string mnemonic = std::string(luaL_checkstring(L, 2));
 
 	lua_newtable(L);
 
 	lua_pushstring(L, "signature");
-	lua_pushstring(L, sign_message(mnemonic, message).c_str());
+	lua_pushstring(L, sign_message(message, mnemonic).c_str());
 	lua_settable(L, -3);
 
 	lua_pushstring(L, "text");
