@@ -47,7 +47,14 @@ lua_setfield(L, top, "settings");
 # Library pack
 find_package(GMP REQUIRED)
 ```
-9. Add these lines to `src/script/scripting_mainmenu.cpp` to register the Solar Crypto module.
+
+Installation is complete. In order to register the Solar Crypto SDK goto section "Usage".
+
+#### Usage
+You have to register the Solar Crypto SDK by performing the steps of at least one, or all, section(s) below depending on your use case.
+
+*Main menu*
+Add these lines to `src/script/scripting_mainmenu.cpp` to enable the Solar Crypto SDK in the main menu scripts.
 
 Include the Solar Crypto header file:
 ```
@@ -61,7 +68,19 @@ LuaSettings::Register(L);
 +LuaCrypto::Register(L);
 ```
 
-Installation is complete.
+*In game*
+Add these lines to `src/script/scripting_client.cpp` to enable the Solar Crypto SDK in the actual game.
+
+Include the Solar Crypto header file:
+```
+#include "lua_api/l_settings.h"
++#include "lua_api/l_solar_crypto.h"
+```
+Register the Solar Crypto module by adding this line to the bottom of `InitializeModApi` function:
+```
+LuaSettings::Register(L);
++LuaCrypto::Register(L);
+```
 
 Tip: replace the line below in `create_world_formspec` function of `minetest/builtin/mainmenu/dlg_create_world.lua` in order to test if it works properly.
 ```
