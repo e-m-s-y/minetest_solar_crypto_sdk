@@ -28,4 +28,6 @@ public:
 	static int l_generate_wallet(lua_State *L);
 
 	static int l_sign_message(lua_State *L);
+
+	static int l_create_signed_transfer_transaction(lua_State *L);
 };
