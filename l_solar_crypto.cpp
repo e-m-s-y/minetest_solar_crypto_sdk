@@ -70,13 +70,13 @@ int LuaCrypto::l_create_signed_transfer_transaction(lua_State *L)
 	const int typeGroup = 1;
 	const int headerType = 0;
 	const int network = 63; // Mainnet
-//	const int network = 30; // Testnet
+	//	const int network = 30; // Testnet
 
 	std::vector<uint8_t> buffer = create_transfer_transaction_buffer(recipientId, amount, nonce, mnemonic, memo, fee, network);
 	std::vector<uint8_t> signatureBuffer = create_transfer_transaction_signature_buffer(buffer, mnemonic);
 	std::string transactionId = create_transfer_transaction_id(buffer, signatureBuffer);
 	std::string signature = create_transfer_transaction_signature(buffer, mnemonic);
-    Json::Value transaction;
+	Json::Value transaction;
 
 	transaction["id"] = transactionId.c_str();
 	transaction["headerType"] = headerType;
@@ -90,20 +90,20 @@ int LuaCrypto::l_create_signed_transfer_transaction(lua_State *L)
 	transaction["senderPublicKey"] = mnemonic_to_public_key(mnemonic).c_str();
 	transaction["signature"] = signature.c_str();
 
-    Json::Value transfers(Json::arrayValue);
-    Json::Value transfer(Json::objectValue);
+	Json::Value transfers(Json::arrayValue);
+	Json::Value transfer(Json::objectValue);
 
-    transfer["amount"] = amount.c_str();
-    transfer["recipientId"] = recipientId.c_str();
+	transfer["amount"] = amount.c_str();
+	transfer["recipientId"] = recipientId.c_str();
 
-    transfers.append(transfer);
+	transfers.append(transfer);
 
-    transaction["asset"]["transfers"] = transfers;
+	transaction["asset"]["transfers"] = transfers;
 
-    Json::StreamWriterBuilder builder;
+	Json::StreamWriterBuilder builder;
 
-    builder["indentation"] = "";
-    std::string json = Json::writeString(builder, transaction);
+	builder["indentation"] = "";
+	std::string json = Json::writeString(builder, transaction);
 
 	lua_newtable(L);
 	lua_pushstring(L, "json");

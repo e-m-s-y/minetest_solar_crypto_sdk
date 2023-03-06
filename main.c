@@ -279,7 +279,7 @@ std::vector<uint8_t> create_transfer_transaction_buffer(std::string recipientId,
 
 	std::vector<uint8_t> asset;
 
-    const uint16_t amountOfTransfers = 1;
+	const uint16_t amountOfTransfers = 1;
 	const int AMOUNT_OF_TRANSFERS_SIZE = 2;
 	const int TRANSFER_SIZE = 8 + 21; // Transfer amount 8 bytes + transfer recipientId 21 bytes
 
