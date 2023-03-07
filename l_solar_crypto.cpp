@@ -74,8 +74,8 @@ int LuaCrypto::l_create_signed_transfer_transaction(lua_State *L)
 
 	std::vector<uint8_t> buffer = create_transfer_transaction_buffer(recipientId, amount, nonce, mnemonic, memo, fee, network);
 	std::vector<uint8_t> signatureBuffer = create_transfer_transaction_signature_buffer(buffer, mnemonic);
+	std::string signature = create_transfer_transaction_signature(signatureBuffer);
 	std::string transactionId = create_transfer_transaction_id(buffer, signatureBuffer);
-	std::string signature = create_transfer_transaction_signature(buffer, mnemonic);
 	Json::Value transaction;
 
 	transaction["id"] = transactionId.c_str();

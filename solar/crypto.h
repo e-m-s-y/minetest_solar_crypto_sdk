@@ -19,4 +19,4 @@ std::vector<uint8_t> create_transfer_transaction_buffer(std::string recipientId,
 void create_transfer_transaction_hash(std::vector<uint8_t> buffer, unsigned char *bytes);
 std::vector<uint8_t> create_transfer_transaction_signature_buffer(std::vector<uint8_t> buffer, std::string mnemonic);
 std::string create_transfer_transaction_id(std::vector<uint8_t> buffer, std::vector<uint8_t> signatureBuffer);
-std::string create_transfer_transaction_signature(std::vector<uint8_t> buffer, std::string mnemonic);
+std::string create_transfer_transaction_signature(std::vector<uint8_t> buffer);

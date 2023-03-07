@@ -351,32 +351,6 @@ std::string create_transfer_transaction_signature(std::vector<uint8_t> buffer) {
 	return std::string(signature);
 }
 
-std::string create_transfer_transaction_signature(std::vector<uint8_t> buffer, std::string mnemonic) {
-	unsigned char hash[32];
-
-	create_transfer_transaction_hash(buffer, hash);
-
-	unsigned char signatureBytes[64];
-	unsigned char entropy[32];
-
-	torsion_getentropy(entropy, 32);
-
-	wei_curve_t *ec = wei_curve_create(WEI_CURVE_SECP256K1);
-
-	unsigned char privateKeyBytes[32];
-
-	mnemonic_to_private_key(mnemonic, privateKeyBytes);
-	bip340_sign(ec, &signatureBytes[0], hash, 32, privateKeyBytes, entropy);
-
-	char signature[128];
-	size_t signatureSize = 128;
-
-	base16_encode(signature, &signatureSize, &signatureBytes[0], 64);
-	wei_curve_destroy(ec);
-
-	return std::string(signature);
-}
-
 // The transaction buffer (without signature) and the signature buffer require to be merged in order to generate
 // a transaction ID.
 std::string create_transfer_transaction_id(std::vector<uint8_t> buffer, std::vector<uint8_t> signatureBuffer) {
@@ -385,15 +359,13 @@ std::string create_transfer_transaction_id(std::vector<uint8_t> buffer, std::vec
 
 	// Resize the buffer to make room for the signature bytes.
 	buffer.resize(DEFAULT_TRANSACTION_SIZE);
-	memcpy (&buffer.at(signatureOffset), &signatureBuffer[0], signatureBuffer.size()); // 64 bytes
+	buffer.insert(buffer.begin() + signatureOffset, signatureBuffer.begin(), signatureBuffer.end()); // 64 bytes
 	buffer.resize(signatureOffset + signatureBuffer.size());
 
 	sha256_t sha256;
 	unsigned char hash[32];
 
-	sha256_init(&sha256);
-	sha256_update(&sha256, &buffer[0], buffer.size());
-	sha256_final(&sha256, hash);
+	create_transfer_transaction_hash(buffer, hash);
 
 	char transactionIdBytes[64];
 	size_t transactionIdSize = 64;
