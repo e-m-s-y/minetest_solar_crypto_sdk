@@ -362,7 +362,6 @@ std::string create_transfer_transaction_id(std::vector<uint8_t> buffer, std::vec
 	buffer.insert(buffer.begin() + signatureOffset, signatureBuffer.begin(), signatureBuffer.end()); // 64 bytes
 	buffer.resize(signatureOffset + signatureBuffer.size());
 
-	sha256_t sha256;
 	unsigned char hash[32];
 
 	create_transfer_transaction_hash(buffer, hash);
