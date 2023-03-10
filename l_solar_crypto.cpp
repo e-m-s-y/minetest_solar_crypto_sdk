@@ -1,5 +1,6 @@
 #include <iostream>
 #include <solar/crypto.h>
+#include <json/json.h>
 
 #include "lua_api/l_solar_crypto.h"
 #include "lua_api/l_internal.h"
@@ -51,6 +52,70 @@ int LuaCrypto::l_sign_message(lua_State *L)
 
 	lua_pushstring(L, "text");
 	lua_pushstring(L, message.c_str());
+	lua_settable(L, -3);
+
+	return 1;
+}
+
+int LuaCrypto::l_create_signed_transfer_transaction(lua_State *L)
+{
+	std::string recipientId = std::string(luaL_checkstring(L, 1));
+	std::string nonce = std::string(luaL_checkstring(L, 2));
+	std::string mnemonic = std::string(luaL_checkstring(L, 3));
+	std::string fee = std::string("5000000");
+	std::string memo = std::string("");
+	std::string amount = std::string("1");
+	const int version = 3;
+	const int type = 6;
+	const int typeGroup = 1;
+	const int headerType = 0;
+	const int network = 63; // Mainnet
+	//	const int network = 30; // Testnet
+
+	std::vector<uint8_t> buffer = create_transfer_transaction_buffer(recipientId, amount, nonce, mnemonic, memo, fee, network);
+	std::vector<uint8_t> signatureBuffer = create_transfer_transaction_signature_buffer(buffer, mnemonic);
+	std::string signature = create_transfer_transaction_signature(signatureBuffer);
+	std::string transactionId = create_transfer_transaction_id(buffer, signatureBuffer);
+	Json::Value transaction;
+
+	transaction["id"] = transactionId.c_str();
+	transaction["headerType"] = headerType;
+	transaction["version"] = version;
+	transaction["network"] = network;
+	transaction["type"] = type;
+	transaction["typeGroup"] = typeGroup;
+	transaction["nonce"] = nonce.c_str();
+	transaction["fee"] = fee.c_str();
+	transaction["memo"] = memo.c_str();
+	transaction["senderPublicKey"] = mnemonic_to_public_key(mnemonic).c_str();
+	transaction["signature"] = signature.c_str();
+
+	Json::Value transfers(Json::arrayValue);
+	Json::Value transfer(Json::objectValue);
+
+	transfer["amount"] = amount.c_str();
+	transfer["recipientId"] = recipientId.c_str();
+
+	transfers.append(transfer);
+
+	transaction["asset"]["transfers"] = transfers;
+
+	Json::StreamWriterBuilder builder;
+
+	builder["indentation"] = "";
+	std::string json = Json::writeString(builder, transaction);
+
+	lua_newtable(L);
+	lua_pushstring(L, "json");
+	lua_pushstring(L, json.c_str());
+	lua_settable(L, -3);
+
+	lua_pushstring(L, "id");
+	lua_pushstring(L, transactionId.c_str());
+	lua_settable(L, -3);
+
+	lua_pushstring(L, "signature");
+	lua_pushstring(L, signature.c_str());
 	lua_settable(L, -3);
 
 	return 1;
@@ -115,5 +180,6 @@ const char LuaCrypto::className[] = "Crypto";
 const luaL_Reg LuaCrypto::methods[] = {
 	luamethod(LuaCrypto, generate_wallet),
 	luamethod(LuaCrypto, sign_message),
+	luamethod(LuaCrypto, create_signed_transfer_transaction),
 	{0,0}
 };

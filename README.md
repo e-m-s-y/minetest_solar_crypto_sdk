@@ -1,5 +1,5 @@
 # Minetest Solar Crypto SDK
-A Solar Crypto SDK that enables wallet generation and BIP340 message signing in Minetest.
+A Solar Crypto SDK that enables wallet generation, BIP340 message signing and generation of (single) transfer transactions in Minetest.
 
 ### Dependencies
 - Minetest 5.6.1
@@ -100,6 +100,15 @@ local message = core.solar_crypto.sign_message(text, wallet.mnemonic)
 
 -- message.signature
 -- message.text
+
+local wallet = core.solar_crypto.generate_wallet()
+local nonce = "1"
+
+local transaction = core.solar_crypto.create_signed_transfer_transaction(wallet.address, nonce, wallet.mnemonic)
+
+-- transaction.id
+-- transaction.signature
+-- transaction.json (this can be broadcast to a Solar Relay)
 ```
 
 ### Running the client
