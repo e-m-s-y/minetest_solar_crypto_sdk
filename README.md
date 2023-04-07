@@ -103,8 +103,9 @@ local message = core.solar_crypto.sign_message(text, wallet.mnemonic)
 
 local wallet = core.solar_crypto.generate_wallet()
 local nonce = "1"
+local memo = "Hello World!" (optional)
 
-local transaction = core.solar_crypto.create_signed_transfer_transaction(wallet.address, nonce, wallet.mnemonic)
+local transaction = core.solar_crypto.create_signed_transfer_transaction(wallet.address, nonce, wallet.mnemonic, memo)
 
 -- transaction.id
 -- transaction.signature
