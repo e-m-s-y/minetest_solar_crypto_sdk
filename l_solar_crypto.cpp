@@ -64,6 +64,17 @@ int LuaCrypto::l_create_signed_transfer_transaction(lua_State *L)
 	std::string mnemonic = std::string(luaL_checkstring(L, 3));
 	std::string fee = std::string("5000000");
 	std::string memo = std::string("");
+
+//	int top = lua_gettop(L);
+//
+//	std::cout << top << std::endl;
+//	std::cout << (lua_type(L, 4) == LUA_TNIL) << std::endl;
+//
+//	if (top >= 4 && lua_type(L, 4) == LUA_TSTRING) {
+//		memo = std::string(luaL_checkstring(L, 4));
+//	}
+
+
 	std::string amount = std::string("1");
 	const int version = 3;
 	const int type = 6;
