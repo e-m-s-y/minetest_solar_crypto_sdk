@@ -111,8 +111,8 @@ std::string generate_mnemonic(int bits) {
 		return std::string("<Invalid amount of bits>");
 	}
 
+	unsigned char bytes[16];
 	size_t bytes_size = 16;
-	unsigned char bytes[bytes_size];
 
 	generate_random_bytes(bytes, bytes_size);
 
@@ -179,8 +179,8 @@ std::string mnemonic_to_public_key(std::string mnemonic) {
 
 	mnemonic_to_public_key_bytes(mnemonic, publicKeyBytes);
 
-  	char publicKey[32];
-  	size_t publicKeySize = 32;
+  	char publicKey[67];
+  	size_t publicKeySize = 66;
 
    	base16_encode(publicKey, &publicKeySize, publicKeyBytes, 33);
 
@@ -196,8 +196,6 @@ void mnemonic_to_private_key(std::string mnemonic, unsigned char *bytes) {
 }
 
 std::string sign_message(std::string message, std::string mnemonic) {
-	std::string publicKey = mnemonic_to_public_key(mnemonic);
-
 	sha256_t sha256;
 	unsigned char hash[32];
 
@@ -217,7 +215,7 @@ std::string sign_message(std::string message, std::string mnemonic) {
 	mnemonic_to_private_key(mnemonic, privateKeyBytes);
 	bip340_sign(ec, signatureBytes, hash, 32, privateKeyBytes, entropy);
 
-  	char signature[128];
+  	char signature[129];
   	size_t signatureSize = 128;
 
 	base16_encode(signature, &signatureSize, signatureBytes, 64);
@@ -343,7 +341,7 @@ std::vector<uint8_t> create_transfer_transaction_signature_buffer(std::vector<ui
 }
 
 std::string create_transfer_transaction_signature(std::vector<uint8_t> buffer) {
-	char signature[128];
+	char signature[129];
 	size_t signatureSize = 128;
 
 	base16_encode(signature, &signatureSize, &buffer[0], 64);
@@ -366,7 +364,7 @@ std::string create_transfer_transaction_id(std::vector<uint8_t> buffer, std::vec
 
 	create_transfer_transaction_hash(buffer, hash);
 
-	char transactionIdBytes[64];
+	char transactionIdBytes[65];
 	size_t transactionIdSize = 64;
 
 	base16_encode(transactionIdBytes, &transactionIdSize, &hash[0], 32);
