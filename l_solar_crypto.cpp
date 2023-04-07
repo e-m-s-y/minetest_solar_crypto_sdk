@@ -63,25 +63,28 @@ int LuaCrypto::l_create_signed_transfer_transaction(lua_State *L)
 	std::string nonce = std::string(luaL_checkstring(L, 2));
 	std::string mnemonic = std::string(luaL_checkstring(L, 3));
 	std::string fee = std::string("5000000");
-	std::string memo = std::string("");
+	std::string amount = std::string("1");
 
 	int top = lua_gettop(L);
 
-	std::cout << top << std::endl;
-	std::cout << (lua_type(L, 4) == LUA_TNIL) << std::endl;
-
 	if (top >= 4 && lua_type(L, 4) == LUA_TSTRING) {
-		memo = std::string(luaL_checkstring(L, 4));
+		amount = std::string(luaL_checkstring(L, 4));
 	}
 
+	std::string memo = std::string("");
 
-	std::string amount = std::string("1");
+	top = lua_gettop(L);
+
+	if (top >= 5 && lua_type(L, 5) == LUA_TSTRING) {
+		memo = std::string(luaL_checkstring(L, 5));
+	}
+
 	const int version = 3;
 	const int type = 6;
 	const int typeGroup = 1;
 	const int headerType = 0;
 	const int network = 63; // Mainnet
-	//	const int network = 30; // Testnet
+	//const int network = 30; // Testnet
 
 	std::vector<uint8_t> buffer = create_transfer_transaction_buffer(recipientId, amount, nonce, mnemonic, memo, fee, network);
 	std::vector<uint8_t> signatureBuffer = create_transfer_transaction_signature_buffer(buffer, mnemonic);
